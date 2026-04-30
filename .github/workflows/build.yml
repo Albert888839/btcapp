@@ -1,0 +1,31 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          pip install buildozer cython
+          sudo apt-get update && sudo apt-get install -y zip unzip openjdk-11-jdk
+          
+      - name: Build with Buildozer
+        run: buildozer android debug
+        
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: btc-scanner-apk
+          path: bin/*.apk
