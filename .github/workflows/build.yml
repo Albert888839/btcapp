@@ -9,23 +9,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
           
       - name: Install dependencies
         run: |
           pip install buildozer cython
-          sudo apt-get update && sudo apt-get install -y zip unzip openjdk-11-jdk
+          sudo apt-get update && sudo apt-get install -y zip unzip openjdk-17-jdk
           
       - name: Build with Buildozer
         run: buildozer android debug
         
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: btc-scanner-apk
           path: bin/*.apk
